@@ -12,16 +12,16 @@ public class NumerosRi {
     void generarRi(){
         int uniformes = 0;
         generarModo();
-        if (validarFrecuencia()) uniformes++; else System.out.println("Fallo frecuencia");
-        if (validarPromedios(numeros)) uniformes++; else System.out.println("Fallo promedios");
-        if (validarIndependencia(numeros)) uniformes++; else System.out.println("Fallo Independecia");
+        //if (validarFrecuencia()) uniformes++; else System.out.println("Fallo frecuencia");
+        //if (validarPromedios(numeros)) uniformes++; else System.out.println("Fallo promedios");
+        //if (validarIndependencia(numeros)) uniformes++; else System.out.println("Fallo Independecia");
 
-        if (uniformes == 3) System.out.println("Numeros Ri generados correctamente");
-        else {
+        //if (uniformes == 3) System.out.println("Numeros Ri generados correctamente");
+        /*else {
             System.out.println("Numeros Ri NO generados correctamente");
             generarRi();
         }
-
+        */
     }
 
     private void generarModo()
@@ -54,11 +54,11 @@ public class NumerosRi {
                             "para el modulo (el modulo debe ser m > " + x + ", m > " + a + ", m > " + c + ")\n",
                     "   GENERADOR DE NÚMEROS PSEUDOALEATORIOS     ", JOptionPane.QUESTION_MESSAGE));
         }else {
-            iteraciones = 200000;
-            x = 234560;
+            iteraciones = 10000;
+            x = 23456;
             a = 21;
             c = 23;
-            m = 300000;
+            m = 100000;
         }
         if(x>0 && a>0 && c>0 && m>x && m>a && m>c) generar();
         else
@@ -106,7 +106,7 @@ public class NumerosRi {
     // Se valida la prueba de promedios con Kolmogorov
     private boolean validarPromedios(ArrayList<Double>nums) {
         boolean valido = false;
-        double mas, menos, sumatoriaMas = 0, sumatoriaMenos = 0, D;
+        /*double mas, menos, sumatoriaMas = 0, sumatoriaMenos = 0, D;
         int n = 0, i = 1;
         double val;
         ArrayList<Double> nums2 = new ArrayList<>();
@@ -179,8 +179,10 @@ public class NumerosRi {
                 System.out.println("De acuerdo a la prueba de Kolmogorov Smirnov los numeros generados NO provienen de una distribución unifirme \n");
                 valido = false;
             }
-        }
-    return  valido;
+        }*/
+        U_KolmoSmirnov k = new U_KolmoSmirnov(numeros);
+
+    return k.valido;
     }
 
     // Se valida la prueba de independencia con Corridas
@@ -265,7 +267,101 @@ public class NumerosRi {
         }
     return valido;
     }
+
     public ArrayList<Double> getNumeros() {
         return numeros;
+    }
+}
+
+class U_KolmoSmirnov {
+    double[] numeros;
+    double[] orden;
+    double X;
+    int i;
+    double Dm;
+    double DM;
+    double N;
+    double Max;
+    double Max2;
+    double DMayor;
+    double d;
+    boolean valido;
+
+    public U_KolmoSmirnov(ArrayList<Double> nums){
+        this.numeros = new double[nums.size()];
+        for (int j = 0; j < nums.size(); j++) {
+            this.numeros[j] = nums.get(j);
+        }
+
+        N=numeros.length;
+        d=1.36/N;
+        Calcular();
+    }
+
+    public void Calcular(){
+        orden=Ascendente(numeros);
+
+        for(i=1;i<=N;i++){
+            X=orden[i-1];
+            X/=10000;
+            DM=(i/N)-X;
+            Dm=X-(i-1)/N;
+
+            if(DM > Max){
+                Max=DM;
+            }
+
+            if(Dm > Max2){
+                Max2=Dm;
+            }
+        }
+        //System.out.println(Max);
+        //System.out.println(Max2);
+
+        if(Max<Max2){
+            DMayor=Max2;
+        }else{
+            DMayor=Max;
+        }
+
+        if(DMayor<=d){
+            System.out.println(X+"  "+i+"  "+N+"  "+DM+"  "+Dm);
+            System.out.println(Max);
+            System.out.println(Max2);
+            System.out.println("Se acepta la hipotesis los numeros generados provienen de una distribucion uniforme");
+            valido = true;
+        }else{
+            System.out.println(X+"  "+i+"  "+N+"  "+DM+"  "+Dm);
+            System.out.println(Max);
+            System.out.println(Max2);
+            System.out.println("Hipotesis rechazada, los numeros no provienen de una distribucion uniforme");
+            valido = false;
+        }
+    }
+
+    public static double[] Ascendente(double[] numeros){
+        int j;
+        boolean flag = true;
+        double temp;
+
+        while ( flag )
+        {
+            flag = false;
+            for( j=0;  j < numeros.length -1;  j++ )
+            {
+                if ( numeros[ j ] > numeros[j+1] )
+                {
+                    temp = numeros[ j ];
+                    numeros[ j ] = numeros[ j+1 ];
+                    numeros[ j+1 ] = temp;
+                    flag = true;
+                }
+            }
+        }
+        return numeros;
+    }
+
+    public boolean isValido() {
+        return valido;
     }
 }
