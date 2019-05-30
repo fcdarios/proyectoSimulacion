@@ -8,5 +8,10 @@ public class Main {
         numerosRi.generarRi();
         Ri = numerosRi.getNumeros();
         //NReinas nr = new NReinas();
+        System.out.println("T: "+Ri.size());
+        for (Double d : Ri) {
+            System.out.println(d);
+        }
+
     }
     }

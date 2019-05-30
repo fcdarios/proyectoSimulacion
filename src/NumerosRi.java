@@ -26,7 +26,7 @@ public class NumerosRi {
             uniformes++; }
         else System.out.println("Fallo Independecia");
 
-        if (uniformes == 2) System.out.println("Numeros Ri generados correctamente");
+        if (uniformes == 3) System.out.println("Numeros Ri generados correctamente");
         else {
             System.out.println("Numeros Ri NO generados correctamente");
             generarRi();
@@ -133,7 +133,6 @@ public class NumerosRi {
             val = nums.get(x) / 100000;
             nums2.add(val);
             n++;
-            System.out.println("Añade valores" + val);
         }
 
 
@@ -169,7 +168,6 @@ public class NumerosRi {
             {
                 System.out.println("Error\n Existen numeros fuera de rango");
             }
-            System.out.println("frecuencia obtenida" + valTemp);
         }
 
         double x2, valorTablaX2 =0.711;
@@ -180,30 +178,13 @@ public class NumerosRi {
                 ((double)Math.pow((FoRango3 - FE),2)/FE)+
                 ((double)Math.pow((FoRango4 - FE),2)/FE)+
                 ((double)Math.pow((FoRango5 - FE),2)/FE);
-
-        System.out.println("Tamaño de la muestra: "+n+"\n");
-        System.out.println("Numero de subintervalos: 5");
-        System.out.println("Frecuencia esperada por subintervalo: "+FE+"\n");
-        System.out.println("Frecuencia observada por subintervalo: \n"
-                +"Rango (0.0,0.2]: "+FoRango1+"\n"
-                +"Rango (0.2,0.4]: "+FoRango2+"\n"
-                +"Rango (0.4,0.6]: "+FoRango3+"\n"
-                +"Rango (0.6,0.8]: "+FoRango4+"\n"
-                +"Rango (0.8,1.0]: "+FoRango5+"\n");
-        System.out.println("Grados de libertad: "+gradosLib+"\n");
-        System.out.println("Nivel de significancia (alfa) considerado 5% \n");
-        System.out.println("Valor de X2 de acuerdo el valor de alfa y el grado de libartad: "+valorTablaX2+"\n");
-        System.out.println("Valor de X2 de acuerdo al calculo de la prueba: "+x2+"\n");
-
         if(x2 < valorTablaX2)
         {
-            System.out.println("Segun la prueba de chi cuadrada la muestra proviene de una distribucion uniforme");
-            valido = true;
+            valido = false;
         }
         else
         {
-            System.out.println("Segun la prueba de chi cuadrada la muestra NO proviene de una distribucion uniforme");
-            valido = false;
+            valido = true;
         }
         return valido;
     }
@@ -263,7 +244,7 @@ public class NumerosRi {
 
         if(Z <= valTablaZ)
         {
-            System.out.println("Nivel de significancia (alfa) considerado 5% \n");
+            /*System.out.println("Nivel de significancia (alfa) considerado 5% \n");
             System.out.println("Total de corridas: "+R+"\n");
             System.out.println("Corridas positivas(arriba de la media): "+numsPos+"\n");
             System.out.println("Corridas negativas(debajo de la media): "+numsNeg+"\n");
@@ -272,11 +253,11 @@ public class NumerosRi {
             System.out.println("Valor de Z de acuerdo al nivel de significancia: "+valTablaZ+"\n");
             System.out.println("Valor de Z obtenido de los calculos con los numeros generados: "+Z+"\n");
             System.out.println("De acuerdo a la prueba de corridas los numeros generados son estadisticamente independientes \n");
-            valido = true;
+            */valido = true;
         }
         else
         {
-            System.out.println("Nivel de significancia (alfa) considerado 5% \n");
+            /*System.out.println("Nivel de significancia (alfa) considerado 5% \n");
             System.out.println("Total de corridas: "+R+"\n");
             System.out.println("Corridas positivas(arriba de la media): "+numsPos+"\n");
             System.out.println("Corridas negativas(debajo de la media): "+numsNeg+"\n");
@@ -285,7 +266,7 @@ public class NumerosRi {
             System.out.println("Valor de Z de acuerdo al nivel de significancia: "+valTablaZ+"\n");
             System.out.println("Valor de Z obtenido de los calculos con los numeros generados: "+Z+"\n");
             System.out.println("De acuerdo a la prueba de corridas los numeros generados NO son estadisticamente independientes \n");
-            valido = false;
+           */ valido = false;
         }
     return valido;
     }
@@ -382,7 +363,6 @@ class U_KolmoSmirnov {
         }
         return numeros;
     }
-   private int n = 2;
     public boolean isValido() {
         return valido;
     }
