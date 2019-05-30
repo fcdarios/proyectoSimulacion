@@ -11,6 +11,11 @@ public class DistribExponencial
     //double[] Xi;
     double lambda;
 
+    public DistribExponencial() {
+        // Aqui
+
+    }
+
     public void DatosExponencial()
     {
         JOptionPane.showMessageDialog(null, "Ingrese datos  paara la ddistribucion exponencial");
@@ -40,18 +45,10 @@ public class DistribExponencial
             Xi.set(i, valorXi);
             Xi.set(i, Double.parseDouble(nf.format(Xi.get(i))));
         }
-        imprimir(Xi);
+
+
     }
 
     public ArrayList<Double> getXi() { return Xi; }
 
-    public void imprimir(ArrayList<Double> Xs)
-    {
-        int n=1;
-        for(Double d : Xs)
-        {
-            System.out.println("El valor Xi numero "+n+" es: "+d);
-            n++;
-        }
-    }
 }
