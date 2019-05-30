@@ -1,12 +1,44 @@
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+
 
 public class Provisional
 {
+
+    ArrayList<Double> Ri; // ya esta declarado en la clase nreinas
+
+    public double numAleatorio()
+    {
+        NumerosRi numerosRi = new NumerosRi();
+        numerosRi.generarRi();
+        Ri = numerosRi.getNumeros();
+
+        Calendar calendario = Calendar.getInstance();
+
+        //int hora = calendario.get(Calendar.HOUR_OF_DAY);
+        //int minutos = calendario.get(Calendar.MINUTE);
+        int segundos = calendario.get(Calendar.SECOND);
+        int milisegundos = calendario.get(Calendar.MILLISECOND);
+        int posicion, numero, totalRi = Ri.size();
+        double numeroA;
+
+        do
+        {
+            posicion = segundos * milisegundos;
+        }
+        while(posicion < totalRi);
+
+        numeroA = (Ri.get(posicion))/100000;
+        return numeroA;
+    }
+
     private double[][] mutacion(double[][] matrizInicial)
     {
+
         int mutaciones=0;
-        double gen, probaMutacion;
-        String str,aux;
+        double gen, probaMutacion,numAleatorio;
+        //String str,aux;
         double[][] matrizMutada = matrizInicial.clone();
 
         //usuario designa la probabilidad de mutacion
@@ -37,10 +69,10 @@ public class Provisional
                 //{
                 //aux = str.substring(x,x+1);
 
-                NECESITO_UN_ARREGLO_CON_NUMEROS_ALEATORIOS
+                numAleatorio=numAleatorio();
 
                 //cambiar valor del gen que muta
-                if(NUMERO_ALEATORIO<= probaMutacion)
+                if(numAleatorio<= probaMutacion)
                 {
                     if(gen == 1)
                     {
