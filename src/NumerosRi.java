@@ -12,16 +12,26 @@ public class NumerosRi {
     void generarRi(){
         int uniformes = 0;
         generarModo();
-        //if (validarFrecuencia()) uniformes++; else System.out.println("Fallo frecuencia");
-        //if (validarPromedios(numeros)) uniformes++; else System.out.println("Fallo promedios");
-        //if (validarIndependencia(numeros)) uniformes++; else System.out.println("Fallo Independecia");
+        if (validarFrecuencia()) {
+            System.out.println("----------------------------- FRECUENCIA");
+            uniformes++;
+        }
+        else System.out.println("Fallo frecuencia");
+        if (validarPromedios(numeros)){
+            System.out.println("----------------------------- Promedios");
+            uniformes++; }
+        else System.out.println("Fallo promedios");
+        if (validarIndependencia(numeros)){
+            System.out.println("----------------------------- Independencia");
+            uniformes++; }
+        else System.out.println("Fallo Independecia");
 
-        //if (uniformes == 3) System.out.println("Numeros Ri generados correctamente");
-        /*else {
+        if (uniformes == 2) System.out.println("Numeros Ri generados correctamente");
+        else {
             System.out.println("Numeros Ri NO generados correctamente");
             generarRi();
         }
-        */
+
     }
 
     private void generarModo()
@@ -104,87 +114,99 @@ public class NumerosRi {
     }
 
     // Se valida la prueba de promedios con Kolmogorov
-    private boolean validarPromedios(ArrayList<Double>nums) {
+    private boolean validarPromedios(ArrayList<Double>nums1) {
         boolean valido = false;
-        /*double mas, menos, sumatoriaMas = 0, sumatoriaMenos = 0, D;
-        int n = 0, i = 1;
-        double val;
-        ArrayList<Double> nums2 = new ArrayList<>();
-        ArrayList<Double> Dmas = new ArrayList<>();
-        ArrayList<Double> Dmenos = new ArrayList<>();
+
+        int n=0;
+        double val = 0;
+        ArrayList<Double>nums2 = new ArrayList<>();
+        String a;
+        ArrayList<Double> nums = new ArrayList<>();
+        for (int j = 0; j < 50; j++) {
+            nums.add(nums1.get(j));
+        }
+        double FE = nums.size() / 5;
 
         //añade los valores decimales a otro arraylist
-        for (int x = 0; x < nums.size(); x++) {
-            val = nums.get(x) / 10000;
+        for (int x=0; x<nums.size(); x++)
+        {
+            val = nums.get(x) / 100000;
             nums2.add(val);
             n++;
+            System.out.println("Añade valores" + val);
         }
 
-        //ordena los valores
-        Collections.sort(nums2);
 
-        //saca los valores de D+ y D-
-        for (int x = 0; x < nums2.size(); x++) {
-            mas = (i / n) - nums2.get(x);
-            menos = nums2.get(x) - ((i - 1) / n);
+        double valTemp;
+        int FoRango1=0,FoRango2=0,FoRango3=0,FoRango4=0,FoRango5=0;
 
-            Dmas.add(mas);
-            Dmenos.add(menos);
+        //cuenta la freuencia obtenida
+        for(int x=0; x<nums2.size();x++)
+        {
+            valTemp =nums2.get(x);
 
-            i++;
-        }
-
-        //saca la sumatoria de D+ y D-
-        for (int x = 0; x < nums2.size(); x++) {
-            sumatoriaMas += Dmas.get(x);
-            sumatoriaMenos += Dmenos.get(x);
-        }
-
-        D = 1.36 / Math.sqrt(n);
-
-        if (sumatoriaMas > sumatoriaMenos) {
-            if (sumatoriaMas <= D) {
-                System.out.println("Nivel de significancia (alfa) considerado 5% \n");
-                System.out.println("Valor de D+: " + sumatoriaMas + "\n");
-                System.out.println("Valor de D-: " + sumatoriaMenos + "\n");
-                System.out.println("Valor de D: " + D + "\n");
-                System.out.println("Total de numeros de la muestra: " + n + "\n");
-                System.out.println("De acuerdo a la prueba de Kolmogorov Smirnov los numeros generados provienen de una distribución unifirme \n");
-                valido = true;
-            } else {
-                System.out.println("Nivel de significancia (alfa) considerado 5% \n");
-                System.out.println("Valor de D+: " + sumatoriaMas + "\n");
-                System.out.println("Valor de D-: " + sumatoriaMenos + "\n");
-                System.out.println("Valor de D: " + D + "\n");
-                System.out.println("Total de numeros de la muestra: " + n + "\n");
-                System.out.println("De acuerdo a la prueba de Kolmogorov Smirnov los numeros generados NO provienen de una distribución unifirme \n");
-                valido = false;
+            if(valTemp > 0 && valTemp <= 0.2000)
+            {
+                FoRango1++;
             }
-
-        } else {
-            if (sumatoriaMenos <= D) {
-                System.out.println("Nivel de significancia (alfa) considerado 5% \n");
-                System.out.println("Valor de D+: " + sumatoriaMas + "\n");
-                System.out.println("Valor de D-: " + sumatoriaMenos + "\n");
-                System.out.println("Valor de D: " + D + "\n");
-                System.out.println("Total de numeros de la muestra: " + n + "\n");
-                System.out.println("De acuerdo a la prueba de Kolmogorov Smirnov los numeros generados provienen de una distribución unifirme \n");
-                valido = true;
-            } else {
-                System.out.println("Nivel de significancia (alfa) considerado 5% \n");
-                System.out.println("Valor de D+: " + sumatoriaMas + "\n");
-                System.out.println("Valor de D-: " + sumatoriaMenos + "\n");
-                System.out.println("Valor de D: " + D + "\n");
-                System.out.println("Total de numeros de la muestra: " + n + "\n");
-                System.out.println("De acuerdo a la prueba de Kolmogorov Smirnov los numeros generados NO provienen de una distribución unifirme \n");
-                valido = false;
+            else if(valTemp > 0.2000 && valTemp <= 0.4000)
+            {
+                FoRango2++;
             }
-        }*/
-        U_KolmoSmirnov k = new U_KolmoSmirnov(numeros);
+            else if(valTemp > 0.4000 && valTemp <= 0.6000)
+            {
+                FoRango3++;
+            }
+            else if(valTemp > 0.6000 && valTemp <= 0.8000)
+            {
+                FoRango4++;
+            }
+            else if(valTemp > 0.8000 && valTemp <= 1)
+            {
+                FoRango5++;
+            }
+            else
+            {
+                System.out.println("Error\n Existen numeros fuera de rango");
+            }
+            System.out.println("frecuencia obtenida" + valTemp);
+        }
 
-    return k.valido;
+        double x2, valorTablaX2 =0.711;
+        int gradosLib = 5-1;
+
+        x2 = ((double)Math.pow((FoRango1 - FE),2)/FE)+
+                ((double)Math.pow((FoRango2 - FE),2)/FE)+
+                ((double)Math.pow((FoRango3 - FE),2)/FE)+
+                ((double)Math.pow((FoRango4 - FE),2)/FE)+
+                ((double)Math.pow((FoRango5 - FE),2)/FE);
+
+        System.out.println("Tamaño de la muestra: "+n+"\n");
+        System.out.println("Numero de subintervalos: 5");
+        System.out.println("Frecuencia esperada por subintervalo: "+FE+"\n");
+        System.out.println("Frecuencia observada por subintervalo: \n"
+                +"Rango (0.0,0.2]: "+FoRango1+"\n"
+                +"Rango (0.2,0.4]: "+FoRango2+"\n"
+                +"Rango (0.4,0.6]: "+FoRango3+"\n"
+                +"Rango (0.6,0.8]: "+FoRango4+"\n"
+                +"Rango (0.8,1.0]: "+FoRango5+"\n");
+        System.out.println("Grados de libertad: "+gradosLib+"\n");
+        System.out.println("Nivel de significancia (alfa) considerado 5% \n");
+        System.out.println("Valor de X2 de acuerdo el valor de alfa y el grado de libartad: "+valorTablaX2+"\n");
+        System.out.println("Valor de X2 de acuerdo al calculo de la prueba: "+x2+"\n");
+
+        if(x2 < valorTablaX2)
+        {
+            System.out.println("Segun la prueba de chi cuadrada la muestra proviene de una distribucion uniforme");
+            valido = true;
+        }
+        else
+        {
+            System.out.println("Segun la prueba de chi cuadrada la muestra NO proviene de una distribucion uniforme");
+            valido = false;
+        }
+        return valido;
     }
-
     // Se valida la prueba de independencia con Corridas
     private boolean validarIndependencia(ArrayList<Double>nums)
     {
@@ -360,7 +382,7 @@ class U_KolmoSmirnov {
         }
         return numeros;
     }
-
+   private int n = 2;
     public boolean isValido() {
         return valido;
     }

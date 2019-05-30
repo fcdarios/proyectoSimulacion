@@ -7,5 +7,6 @@ public class Main {
         NumerosRi numerosRi = new NumerosRi();
         numerosRi.generarRi();
         Ri = numerosRi.getNumeros();
+        //NReinas nr = new NReinas();
     }
     }
