@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 public class DistribTriangular
 {
+
     ArrayList<Double> Xi;
     double a = 0, b, c, p, x;
     String func="";

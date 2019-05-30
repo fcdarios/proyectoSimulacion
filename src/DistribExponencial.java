@@ -17,7 +17,7 @@ public class DistribExponencial
         lambda = Double.parseDouble(JOptionPane.showInputDialog(null,"Ingrese el valor de lambda: ",
                                     "GENERADOR DE VARIABLES ALEATORIAS", JOptionPane.QUESTION_MESSAGE));
 
-        if(lambda<=0)
+        if(lambda>=0)
         {
             System.out.println("Valor de lambda incorrecto\nlambda no puede ser menor o igual a 0");
             DatosExponencial();
