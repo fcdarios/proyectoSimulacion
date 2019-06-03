@@ -55,6 +55,7 @@ public class NReinas {
         boolean repeticion = false;
         int sumaAtaques;
         do {
+
             valores();
             ordenarClases(fenotipos, genotipos);
             seleccionPadres(genotipos);
