@@ -16,12 +16,12 @@ public class NReinas {
     double aportacionTotal;
     double[] probabilidad;
     double[] proAcomulada;
-    int nPosicion = 0;
+    int nPosicion = 0, nGeneracion = 1;
     Scanner sc= new Scanner(System.in);
 
     // 1 Inicio del programa
-    public NReinas() {
-
+    public NReinas(ArrayList<Double> Ri) {
+        this.Ri = Ri;
         nPoblacion = Integer.parseInt(JOptionPane.showInputDialog(null,
                 "Ingresa el número de poblacion",
                 "   N reinas     ",
@@ -41,16 +41,37 @@ public class NReinas {
 
         // Se genera la primera generacion de los individuos
         primeraGeneracion();
+        for (int i = 0; i < nPoblacion; i++) {
+
+            mostrarTablero(fenotipos[i]);
+        }
+        principal();
     }
 
     private void principal(){
+        boolean repeticion = false;
+        int sumaAtaques;
         do {
             valores();
             ordenarClases(fenotipos, genotipos);
             seleccionPadres(genotipos);
             genotipos = mutacion(genotipos);
             fenotipos = genTofen(genotipos);
-        }while (evaluacion(fenotipos));
+            sumaAtaques = evaluacion(fenotipos);
+            repeticion = mostrarResultados(evaluacion(fenotipos));
+        }while (repeticion);
+    }
+    private boolean mostrarResultados(int sumaAtaques){
+        boolean repe = true;
+        System.out.println("--------------------------------");
+        System.out.println("Generacion: "+nGeneracion);
+        System.out.println("Maximo de ataques de reinas que se atacan directamente esperado: "+nReinasAtaques);
+        System.out.println("Maximo de ataques de reinas que se atacan directamente observado: "+sumaAtaques);
+        for (int i = 0; i < fenotipos.length; i++) {
+            mostrarTablero(fenotipos[i]);
+        }
+        if (sumaAtaques >= nReinasAtaques) repe = false;
+        return repe;
     }
     private int[][] genTofen(int[][] gentotipos){
         String numero="";
@@ -64,48 +85,40 @@ public class NReinas {
         return fenotiposT;
     }
 
-    private boolean evaluacion(int[][] feno){
-        boolean repite = false;
+    private int evaluacion(int[][] feno){
         int sumaR = 0;
         for (int i = 0; i < feno.length; i++) {
             sumaR+= ataquesReinas(feno[i]);
-            mostrarTablero(feno[i]);
         }
-        if (sumaR >= nReinasAtaques) repite = false;
-        else repite = true;
-
-
-        return repite;
+        return sumaR;
     }
 
     private void primeraGeneracion(){
         // Se generan numeros aleatorios uniformes
-        NumerosRi numerosRi = new NumerosRi();
-        numerosRi.generarRi();
-        Ri = numerosRi.getNumeros();
-        int x;
+        int x, opc;
         String[] feno = new String[fenotipos.length];
         String[] geno = new String[fenotipos.length];
 
         // sacar primera generacion de fenotipos
-        for (int i = 0; i < fenotipos.length ; i++) {
-            feno[i] = "";
-            for (int j = 0; j < fenotipos[0].length; j++) {
-                do {
-                    // Se elige un numero aleatorio en base a su posicion
-                    System.out.println("Elige una posicion entre 0 y "+Ri.size());
-                    x = (int)((Ri.get(sc.nextInt()))/(10000.0));
-                    // Si el numero cae en el rango de 0 a 3 se le asigna al fenotipo
-                    if (x >= 0 && x <= 3) {
-                        fenotipos[i][j] = x;
-                        feno[i] = feno[i]+""+x;
-                        System.out.println("Casilla ["+(i+1)+"]["+(j+1)+"] -> "+fenotipos[i][j]);
-                        nPosicion++;
-                    }else System.out.println("Vuelve a intentarlo: "+x);
-                }while (x < 0 || x > 3);
-            }
-        }
 
+            for (int i = 0; i < fenotipos.length; i++) {
+                feno[i] = "";
+                for (int j = 0; j < fenotipos[0].length; j++) {
+                    do {
+                        // Se elige un numero aleatorio en base a su posicion
+                        System.out.println("Elige una posicion entre 0 y " + Ri.size());
+                        x = (int) ((Ri.get(sc.nextInt())) / (10000.0));
+                        // Si el numero cae en el rango de 0 a 3 se le asigna al fenotipo
+                        if (x >= 0 && x <= 3) {
+                            fenotipos[i][j] = x;
+                            feno[i] = feno[i] + "" + x;
+                            System.out.println("Casilla [" + (i + 1) + "][" + (j + 1) + "] -> " + fenotipos[i][j]);
+                            nPosicion++;
+                        } else System.out.println("Vuelve a intentarlo: " + x);
+                    } while (x < 0 || x > 3);
+                }
+
+        }
         // pasar primera generacion de fenotipos  a genotipos
         for (int i = 0; i < genotipos.length ; i++) {
             geno[i] = obtenerBinario(Integer.parseInt(feno[i]));
@@ -134,32 +147,37 @@ public class NReinas {
 
     // paso 8
     private void ordenarClases(int[][] fenotipos, int[][] genotipos) {
+        Rango[] clases = new Rango[nPoblacion];
+        for (int i = 0; i < nPoblacion; i++) {
+            clases[i] = new Rango();
+        }
         int[][] fenotiposTemp = new int[fenotipos.length][fenotipos[0].length];
         int[][] genotiposTemp = new int[genotipos.length][genotipos[0].length];
         double x;
         int numIndividuo = 0;
-        Rango[] clases = new Rango[nPoblacion];
-
         // Sacar los rangos para las clases
-        clases[0].setrIzq(0);
+
         for (int i = 0; i < nPoblacion; i++) {
+            if (i == 0) clases[i].setrIzq(0.0);
             clases[i].setrDer(proAcomulada[i]);
-            if (i < nPoblacion)
+            if (i < nPoblacion-1)
             clases[i+1].setrIzq(proAcomulada[i]);
         }
 
+        System.out.println("MONTECARLO");
         for (int i = 0; i < nPoblacion; i++) {
-                System.out.println("Elige una posicion entre 0 y "+Ri.size());
                 // Montecarlo
-                x = (Ri.get(sc.nextInt()))/(100000.0);
+                x = (Ri.get(i)/(100000.0));
                 for (int j = 0; j < clases.length ; j++) {
                     if (x >= clases[j].getrIzq() || x < clases[j].getrDer() ){
                         numIndividuo = j;
                     }
                 }
+
             for (int j = 0; j < fenotipos[0].length ; j++) {
                 fenotiposTemp[i][j] = fenotipos[numIndividuo][j];
             }
+            System.out.println("Entra---2");
             for (int j = 0; j < fenotipos[0].length ; j++) {
                 genotiposTemp[i][j] = genotipos[numIndividuo][j];
             }
@@ -169,24 +187,11 @@ public class NReinas {
         this.genotipos = genotipos;
     }
 
-    class Rango{
-        double rIzq, rDer;
-        public double getrIzq() {
-            return rIzq;
-        }
-        public void setrIzq(double rIzq) {
-            this.rIzq = rIzq;
-        }
-        public double getrDer() {
-            return rDer;
-        }
-        public void setrDer(double rDer) {
-            this.rDer = rDer;
-        }
-    }
+
 
     // Cruce
     private void seleccionPadres(int[][] genotipos) {
+        System.out.println("Seleccion padres");
         int [][] genotiposPadres = new int[2][genotipos[0].length];
         int [][] genotiposPadresT;
         int [][] genotiposTemp = new int[nPoblacion][genotipos[0].length];
@@ -220,6 +225,7 @@ public class NReinas {
             genotiposPadresT[0][i] = padres[0][i];
             genotiposPadresT[1][i] = padres[1][i];
         }
+        System.out.println("Seleccion padres SAliste");
         return genotiposPadresT;
     }
 
@@ -266,7 +272,7 @@ public class NReinas {
 
         do
         {
-            posicion = segundos * milisegundos;
+            posicion = milisegundos;
         }
         while(posicion < totalRi);
 
@@ -358,6 +364,7 @@ public class NReinas {
     }
 
     private void mostrarTablero(int[] tablero){
+        System.out.println("----------------");
         for (int i = 0; i < 4 ; i++) {
             for (int j = 0; j < 4; j++) {
                 if ((i+1) == tablero[j]) System.out.print("  R");

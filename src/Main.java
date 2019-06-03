@@ -7,12 +7,6 @@ public class Main {
         NumerosRi numerosRi = new NumerosRi();
         numerosRi.generarRi();
         Ri = numerosRi.getNumeros();
-        //NReinas nr = new NReinas();
-        System.out.println("T: "+Ri.size());
-        for (Double d : Ri) {
-            double x = (d/100000.0);
-            System.out.println(x);
-        }
-
+        NReinas nr = new NReinas(Ri);
     }
-    }
+}

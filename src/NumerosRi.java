@@ -13,16 +13,16 @@ public class NumerosRi {
         int uniformes = 0;
         generarModo();
         if (validarFrecuencia()) {
-            System.out.println("----------------------------- FRECUENCIA");
+            System.out.println("----------> Pasa prueba de FRECUENCIA");
             uniformes++;
         }
         else System.out.println("Fallo frecuencia");
         if (validarPromedios(numeros)){
-            System.out.println("----------------------------- Promedios");
+            System.out.println("----------> Pasa prueba de Promedios con Kolmo");
             uniformes++; }
         else System.out.println("Fallo promedios");
         if (validarIndependencia(numeros)){
-            System.out.println("----------------------------- Independencia");
+            System.out.println("----------> Pasa prueba de Independencia");
             uniformes++; }
         else System.out.println("Fallo Independecia");
 
