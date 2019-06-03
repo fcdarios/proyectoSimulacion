@@ -22,10 +22,12 @@ public class NReinas {
     // 1 Inicio del programa
     public NReinas(ArrayList<Double> Ri) {
         this.Ri = Ri;
-        nPoblacion = Integer.parseInt(JOptionPane.showInputDialog(null,
+        /*nPoblacion = Integer.parseInt(JOptionPane.showInputDialog(null,
                 "Ingresa el número de poblacion",
                 "   N reinas     ",
                 JOptionPane.QUESTION_MESSAGE));
+         */
+        nPoblacion = 4;
         nReinasAtaques = Integer.parseInt(JOptionPane.showInputDialog(null,
                 "Ingresa el número maximo de ataques de reinas que se atacan directamente " +
                         "\n mayor a 1 y menor que " + (6 * nPoblacion),
@@ -55,8 +57,11 @@ public class NReinas {
             valores();
             ordenarClases(fenotipos, genotipos);
             seleccionPadres(genotipos);
+            System.out.println("SALIR CRUCE");
             genotipos = mutacion(genotipos);
+            System.out.println("SALIR mutacion");
             fenotipos = genTofen(genotipos);
+            System.out.println("SALIR fenoTO");
             sumaAtaques = evaluacion(fenotipos);
             repeticion = mostrarResultados(evaluacion(fenotipos));
         }while (repeticion);
@@ -74,6 +79,7 @@ public class NReinas {
         return repe;
     }
     private int[][] genTofen(int[][] gentotipos){
+        System.out.println("AAAAAAAAAAAAAAAAA");
         String numero="";
         int[][] fenotiposT =new int[gentotipos.length][4];
         for (int i = 0; i < genotipos.length; i++) {
@@ -95,29 +101,23 @@ public class NReinas {
 
     private void primeraGeneracion(){
         // Se generan numeros aleatorios uniformes
-        int x, opc;
+        int x, opc, k=0;
         String[] feno = new String[fenotipos.length];
         String[] geno = new String[fenotipos.length];
 
         // sacar primera generacion de fenotipos
-
-            for (int i = 0; i < fenotipos.length; i++) {
-                feno[i] = "";
-                for (int j = 0; j < fenotipos[0].length; j++) {
-                    do {
-                        // Se elige un numero aleatorio en base a su posicion
-                        System.out.println("Elige una posicion entre 0 y " + Ri.size());
-                        x = (int) ((Ri.get(sc.nextInt())) / (10000.0));
-                        // Si el numero cae en el rango de 0 a 3 se le asigna al fenotipo
-                        if (x >= 0 && x <= 3) {
-                            fenotipos[i][j] = x;
-                            feno[i] = feno[i] + "" + x;
-                            System.out.println("Casilla [" + (i + 1) + "][" + (j + 1) + "] -> " + fenotipos[i][j]);
-                            nPosicion++;
-                        } else System.out.println("Vuelve a intentarlo: " + x);
-                    } while (x < 0 || x > 3);
+        for (int i = 0; i < 4; i++) {
+            feno[i] = "";
+            for (int j = 0; j < 4; j++) {
+                do {
+                    x = (int) ((Ri.get(k)) / (10000.0));
+                    k++;
+                } while (x < 0 || x > 3);
+                if (x >= 0 && x <= 3) {
+                    fenotipos[i][j] = x;
+                    feno[i] = feno[i] + "" + x;
                 }
-
+            }
         }
         // pasar primera generacion de fenotipos  a genotipos
         for (int i = 0; i < genotipos.length ; i++) {
@@ -147,6 +147,7 @@ public class NReinas {
 
     // paso 8
     private void ordenarClases(int[][] fenotipos, int[][] genotipos) {
+
         Rango[] clases = new Rango[nPoblacion];
         for (int i = 0; i < nPoblacion; i++) {
             clases[i] = new Rango();
@@ -156,7 +157,6 @@ public class NReinas {
         double x;
         int numIndividuo = 0;
         // Sacar los rangos para las clases
-
         for (int i = 0; i < nPoblacion; i++) {
             if (i == 0) clases[i].setrIzq(0.0);
             clases[i].setrDer(proAcomulada[i]);
@@ -177,7 +177,6 @@ public class NReinas {
             for (int j = 0; j < fenotipos[0].length ; j++) {
                 fenotiposTemp[i][j] = fenotipos[numIndividuo][j];
             }
-            System.out.println("Entra---2");
             for (int j = 0; j < fenotipos[0].length ; j++) {
                 genotiposTemp[i][j] = genotipos[numIndividuo][j];
             }
@@ -192,40 +191,42 @@ public class NReinas {
     // Cruce
     private void seleccionPadres(int[][] genotipos) {
         System.out.println("Seleccion padres");
-        int [][] genotiposPadres = new int[2][genotipos[0].length];
-        int [][] genotiposPadresT;
-        int [][] genotiposTemp = new int[nPoblacion][genotipos[0].length];
+        int [][] hijos1;
+        int [][] hijos2;
         int n = 0;
-        boolean impar = false;
-       if (nPoblacion % 2 == 0)impar = true;
-        for (int i = 0; i < genotipos.length; i=i+2) {
-            genotiposPadres[0] = genotipos[i];
-            if (impar && i == genotipos.length-1)
-                genotiposPadres[1] = genotipos[0];
-            else genotiposPadres[1] = genotipos[i+1];
-            genotiposPadresT = Cruce(genotiposPadres);
-            genotiposTemp[i] = genotiposPadresT[0];
-            genotiposTemp[i+1] = genotiposPadresT[1];
-        }
-        this.genotipos = genotiposTemp;
-        }
-    // Cruce
-    private int[][] Cruce(int[][] padres) {
-        int[][] genotiposPadresT = new int[2][padres[0].length];
-        int n = 0;
-        do {
-            n = (int)(numAleatorio()/1000);
-        }while (n < 1 || n > padres[0].length-1);
 
-        for (int i = 0; i < n; i++) {
-            genotiposPadresT[0][i] = padres[0][i];
-            genotiposPadresT[1][i] = padres[1][i];
+        hijos1 = Cruce(genotipos[0],genotipos[1]);
+        hijos2 = Cruce(genotipos[2],genotipos[3]);
+
+        this.genotipos[0] = hijos1[0];
+        this.genotipos[1] = hijos1[1];
+        this.genotipos[2] = hijos2[0];
+        this.genotipos[3] = hijos2[1];
         }
-        for (int i = n; i < padres[0].length; i++) {
-            genotiposPadresT[0][i] = padres[0][i];
-            genotiposPadresT[1][i] = padres[1][i];
+
+    // Cruce
+    private int[][] Cruce(int[] padre, int[] madre) {
+        int[][] genotiposPadresT = new int[2][padre.length];
+        int n1 = 0, n2 = 0, j = 0;
+        System.out.println("CRUCE");
+        do {
+            n1 = (int)(Ri.get(j)/1000);
+            j++;
+        }while (n1 < 1 || n1 > padre.length-1);
+        do {
+            n2 = (int)(Ri.get(j)/1000);
+            j++;
+        }while (n2 < 1 || n2 > padre.length-1);
+
+        for (int i = 0; i < n1; i++) {
+            genotiposPadresT[0][i] = padre[i];
+            genotiposPadresT[1][i] = madre[i];
         }
-        System.out.println("Seleccion padres SAliste");
+        for (int i = n2; i < genotiposPadresT[0].length; i++) {
+            genotiposPadresT[0][i] = padre[i];
+            genotiposPadresT[1][i] = madre[i];
+        }
+
         return genotiposPadresT;
     }
 
@@ -367,10 +368,15 @@ public class NReinas {
         System.out.println("----------------");
         for (int i = 0; i < 4 ; i++) {
             for (int j = 0; j < 4; j++) {
-                if ((i+1) == tablero[j]) System.out.print("  R");
+                if ((i) == tablero[j]) System.out.print("  R");
                 else System.out.print("  ▄");
             }
             System.out.println();
+        }
+    }
+    private void mostrarFenoGeno(int[] tipo){
+        for (int i = 0; i < 4 ; i++) {
+            System.out.print((tipo[i]));
         }
     }
     
