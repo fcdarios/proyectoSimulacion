@@ -245,7 +245,7 @@ public class NReinas {
             if(probaMutacion<0) {
                 JOptionPane.showMessageDialog(null,"El valor de la probabilidad debe estar entre 0 y 100");
             }
-        }while(probaMutacion<0);
+        }while(probaMutacion>0);
 
         //obtener cada posicion del arreglo que contiene los genotipos
         for (int i=0; i < matrizMutada.length; i++) {
