@@ -26,11 +26,12 @@ public class KolmogorovExponencial2 {
     ArrayList<Double>Dmas = new ArrayList<>();
     ArrayList<Double>Dmenos = new ArrayList<>();
     
-    public void calcular(ArrayList<Double>numx){
-        numAle = numx;
-    }
+    //public void calcular(ArrayList<Double>numx){
+      //  numAle = numx;
+    //}
     
-    public void calcular2(){
+    public void calcular2(ArrayList<Double>numx){
+        numAle = numx;
         
         int n=0, i=1;
          //ordena los valores (primera columna)
