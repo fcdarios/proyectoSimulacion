@@ -53,12 +53,15 @@ public class DistribExponencial
             Xi.set(i, valorXi);
             Xi.set(i, Double.parseDouble(nf.format(Xi.get(i))));
         }
+        metodoKS();
     }
 
     public ArrayList<Double> getXi() { return Xi; }
 
-    //Falta pasar el array a la clase de la prueba
-    //KolmogorovExponencial2 obj = new KolmogorovExponencial2();
-    //obj.calcular2(Xi);
-    //KolmogorovExponencial2.calcular2(Xi);
+    public void metodoKS ()
+    {
+        KolmogorovExponencial2 k = new KolmogorovExponencial2();
+        k.calcular2(Xi);
+
+    }
 }
