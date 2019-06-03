@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 
 public class NReinas {
+
     ArrayList<Double> Ri;
     ArrayList<Double> XiDistribucion1;
     ArrayList<Double> XiDistribucion2;
