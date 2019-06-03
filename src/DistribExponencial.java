@@ -10,6 +10,8 @@ public class DistribExponencial
     ArrayList<Double>Xi;
     //double[] Ri;
     //double[] Xi;
+
+
     double lambda;
 
     public void numerosRi()
