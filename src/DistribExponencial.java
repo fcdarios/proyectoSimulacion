@@ -6,14 +6,19 @@ import java.util.ArrayList;
 public class DistribExponencial
 {
     ArrayList<Double>Ri;
+    //ArrayList<Double>Ri2;
     ArrayList<Double>Xi;
     //double[] Ri;
     //double[] Xi;
+
+
     double lambda;
 
-    public DistribExponencial() {
-        // Aqui
-
+    public void numerosRi()
+    {
+        NumerosRi numerosRi = new NumerosRi();
+        numerosRi.generarRi();
+        Ri = numerosRi.getNumeros();
     }
 
     public void DatosExponencial()
@@ -27,11 +32,16 @@ public class DistribExponencial
             System.out.println("Valor de lambda incorrecto\nlambda no puede ser menor o igual a 0");
             DatosExponencial();
         }
+        else
+        {
+            numerosRi();
+            ExponencialInversa(Ri);
+        }
     }
 
     public void ExponencialInversa(ArrayList<Double> numsA)
     {
-        Ri = numsA;
+        //Ri2 = numsA;
         Xi = new ArrayList<Double>(numsA.size());
 
         NumberFormat nf = new DecimalFormat("##.####");
@@ -45,10 +55,15 @@ public class DistribExponencial
             Xi.set(i, valorXi);
             Xi.set(i, Double.parseDouble(nf.format(Xi.get(i))));
         }
-
-
+        metodoKS();
     }
 
     public ArrayList<Double> getXi() { return Xi; }
 
+    public void metodoKS ()
+    {
+        KolmogorovExponencial2 k = new KolmogorovExponencial2();
+        k.calcular2(Xi);
+
+    }
 }
