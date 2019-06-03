@@ -242,10 +242,10 @@ public class NReinas {
         do {
             probaMutacion = Double.parseDouble(JOptionPane.showInputDialog(null,
                     "Ingrese probabilidad de mutación(se recomienda valor muy pequeño)"));
-            if(probaMutacion<0) {
-                JOptionPane.showMessageDialog(null,"El valor de la probabilidad debe estar entre 0 y 100");
+            if(probaMutacion<0.0000) {
+                JOptionPane.showMessageDialog(null,"El valor de la probabilidad debe ser mayor a 0");
             }
-        }while(probaMutacion>0);
+        }while(probaMutacion<0.0000);
 
         //obtener cada posicion del arreglo que contiene los genotipos
         for (int i=0; i < matrizMutada.length; i++) {
@@ -277,9 +277,9 @@ public class NReinas {
         {
             posicion = milisegundos;
         }
-        while(posicion < totalRi);
+        while(posicion > totalRi);
 
-        numeroA = (Ri.get(posicion));
+        numeroA = (Ri.get(posicion))*segundos;
         return numeroA;
     }
 
